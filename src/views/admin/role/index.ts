@@ -5,7 +5,7 @@ export type { IUser, ICreateUserRequest, IUpdateUserRequest } from "./types/user
 export { useUserStore } from "./stores/userStore"
 
 // Экспорт сервиса
-export { UserService } from "./services/userApi"
+export { RoleService } from "./services/roleApi"
 
 // Экспорт роутера
 export { userRoutes } from "./routes/userRoutes"

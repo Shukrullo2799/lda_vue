@@ -6,7 +6,7 @@ import ApiService from "@/services/api.service"
 export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({
     user: JSON.parse(localStorage.getItem("user") as string) ?? null,
-    permissions: [],
+    permissions: JSON.parse(localStorage.getItem("user") as string).permissions || [],
     accessToken: localStorage.getItem("accessToken"),
     refreshToken: localStorage.getItem("refreshToken"),
     isAuthenticated: false,

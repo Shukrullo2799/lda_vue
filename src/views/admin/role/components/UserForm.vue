@@ -5,18 +5,14 @@ import { type ICreateUserRequest, type IUpdateUserRequest, useUserStore } from "
 import { X } from "lucide-vue-next"
 import { storeToRefs } from "pinia"
 import { Form } from "vee-validate"
-import SetPersonData from "@/components/Person/SetPersonData.vue"
-import UserInfo from "@/components/Person/UserInfo.vue"
-import type { ISetPassportData } from "@/components/Person/PersonDataTypes"
-import { PersonService } from "@/services/others/person.service"
+import FormSelect from "@/components/form/FormSelect.vue"
 
 const userId = defineModel<number | null>("userId")
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const { editingUser, loading, saveLoading, roleList, searchLoading } = storeToRefs(userStore)
-
+const { editingUser, loading, saveLoading } = storeToRefs(userStore)
 const isEdit = ref(false)
 
 const loadUser = async () => {
@@ -42,20 +38,11 @@ const handleCancelUser = () => {
   editingUser.value = null
 }
 
-const setPerson = (filterPerson: ISetPassportData) => {
-  if (editingUser.value) {
-    PersonService.GetByPassportData(filterPerson).then((res) => {
-      editingUser.value!.person = res.data
-    })
-  }
-}
-
 onMounted(async () => {
   if (userId.value != null) {
     isEdit.value = Boolean(userId.value)
     await loadUser()
   }
-  await userStore.fetchRoleList()
 })
 </script>
 
@@ -120,21 +107,11 @@ onMounted(async () => {
               name="roles"
               v-model="editingUser.roles"
               :options="roleList"
-              :label="$t('roles')"
-              multiple
-              :placeholder="$t('roles')"
+              type="email"
+              :label="$t('email')"
+              :placeholder="$t('email')"
             />
           </div>
-        </div>
-        <div>
-          <SetPersonData
-            :searchLoading
-            v-model="editingUser.person"
-            :documentTypeList="[]"
-            @setPerson="setPerson"
-            class="mb-4"
-          />
-          <UserInfo :person="editingUser.person" v-if="editingUser.person" :title="$t('person')" />
         </div>
 
         <div class="page-actions">

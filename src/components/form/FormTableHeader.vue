@@ -149,7 +149,7 @@ const edit = (id: number) => emits("edit", id)
         </slot>
         <slot name="create" :ability="auth">
           <div v-if="canCreate && auth.can(`${permission}Create`)">
-            <Button size="sm" @click="edit(0)">
+            <Button size="sm" variant="info" @click="edit(0)">
               <Plus class="w-4 h-4 mr-1" /> {{ $t("Create") }}
             </Button>
           </div>

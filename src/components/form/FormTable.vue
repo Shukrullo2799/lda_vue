@@ -96,10 +96,8 @@ const loadData = async (reset = false) => {
   })
 
   if (reset) data.value = []
-
   try {
     const res = await service.value[apiName.value](itemFilter.value)
-    console.log("res", res)
     const responseData = props.resData ? res.data[props.resData] : res.data
     data.value = responseData
     itemFilter.value.totalRows = res.data?.total ?? res.data?.totalCount ?? 0
@@ -191,7 +189,7 @@ watchEffect(() => {
           <tr>
             <th
               v-if="prependAction"
-              class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
+              class="p-4 text-left text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
             >
               {{ $t("actions") }}
             </th>
@@ -201,7 +199,7 @@ watchEffect(() => {
                   scope="col"
                   :class="[
                     field.thClass,
-                    'px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none',
+                    'p-4   text-left text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none',
                   ]"
                   @click="field.sort ? sort(field) : null"
                   :aria-sort="
@@ -224,7 +222,7 @@ watchEffect(() => {
             </template>
             <th
               v-if="appendAction"
-              class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
+              class="p-4 text-center text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none"
             >
               {{ $t("actions") }}
             </th>
@@ -260,13 +258,13 @@ watchEffect(() => {
           >
             <td
               v-if="prependAction"
-              class="px-4 py-2 text-center text-sm text-gray-800 dark:text-gray-200"
+              class="p-4 text-center text-sm text-gray-800 dark:text-gray-200"
             >
               <slot name="prepend-action" :item="item" :refresh="refresh" :get-data="getData" />
             </td>
 
             <template v-for="field in checkFields">
-              <td :class="[field.tdClass, 'px-4 py-2 text-sm text-gray-800 dark:text-gray-200 ']">
+              <td :class="[field.tdClass, 'p-4 text-sm text-gray-800 dark:text-gray-200 ']">
                 <slot
                   :name="`item-${field.key}`"
                   :item="item"
@@ -281,7 +279,7 @@ watchEffect(() => {
 
             <td
               v-if="appendAction"
-              class="px-4 py-2 text-center text-sm text-gray-800 dark:text-gray-200"
+              class="p-4 text-center text-sm text-gray-800 dark:text-gray-200"
             >
               <slot name="append-actions" :item="item" :refresh="refresh" :get-data="getData" />
             </td>
@@ -312,11 +310,11 @@ watchEffect(() => {
             }
           "
           :options="[
-            { value: 20, label: '20' },
-            { value: 50, label: '50' },
-            { value: 100, label: '100' },
-            { value: 200, label: '200' },
-            { value: 500, label: '500' },
+            { value: 20, text: '20' },
+            { value: 50, text: '50' },
+            { value: 100, text: '100' },
+            { value: 200, text: '200' },
+            { value: 500, text: '500' },
           ]"
           :clearable="false"
         >

@@ -6,19 +6,16 @@ import {
   type IUser,
   UserService,
 } from "@/views/admin/user"
-
 import type { ISelectList } from "@/models"
-import { RoleService } from "@/views/admin/role"
 
 const { setError } = useErrorToast()
 
-export const useUserStore = defineStore("user", {
+export const useUserStore = defineStore("role", {
   state: () => ({
     users: [] as IUser[],
     editingUser: null as IUpdateUserRequest | ICreateUserRequest | null,
     loading: false,
     saveLoading: false,
-    searchLoading: false,
     error: null as string | null,
     roleList: [] as ISelectList[],
   }),
@@ -69,7 +66,7 @@ export const useUserStore = defineStore("user", {
     },
     async fetchRoleList() {
       try {
-        const response = await RoleService.GetSelectList()
+        const response = await UserService.GetRoleList()
         this.roleList = response.data
       } catch (error) {
         setError(error)

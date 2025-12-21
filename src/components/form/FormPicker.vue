@@ -19,6 +19,7 @@ interface Props {
   customValidator?: (val: any) => true | string
   validateOnMount?: boolean
   class?: HTMLAttributes["class"]
+  inputClass?: HTMLAttributes["class"]
   format?: string
   mask?: string
   type?: string
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   clearable: false,
   format: "DD.MM.YYYY",
   mask: "##.##.####",
+  inputClass: "h-10 cursor-pointer",
 })
 
 const emit = defineEmits<{
@@ -96,9 +98,8 @@ const labelClasses = computed(() =>
           :disabled="disabled"
           :placeholder="placeholder"
           v-model="innerValue as string"
-          class="cursor-pointer"
           :aria-invalid="hasError"
-          :class="inputClasses"
+          :class="[inputClasses, inputClass]"
         />
       </template>
     </DatePicker>

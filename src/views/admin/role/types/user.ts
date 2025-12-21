@@ -14,7 +14,6 @@ export interface ICreateUserRequest {
   password: string
   email: string
   phoneNumber: string
-  person: IPerson
   personId: 0
   roles: string[]
 }

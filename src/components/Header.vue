@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { computed } from "vue"
+import { RouterLink } from "vue-router"
+import { User, LogOut } from "lucide-vue-next"
+import { useAuthStore } from "@/views/auth"
+
+const language = computed({
+  get: () => localStorage.getItem("language") || "en",
+  set: (value: string) => {
+    localStorage.setItem("language", value)
+    location.reload()
+  },
+})
+
+const authStore = useAuthStore()
+</script>
 <template>
   <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4">
@@ -72,22 +88,3 @@
     </div>
   </header>
 </template>
-
-<script setup lang="ts">
-import { computed } from "vue"
-import { RouterLink } from "vue-router"
-import { User, LogOut } from "lucide-vue-next"
-import { useAuthStore } from "@/views/auth"
-
-const language = computed({
-  get: () => localStorage.getItem("language") || "en",
-  set: (value: string) => {
-    localStorage.setItem("language", value)
-    location.reload()
-  },
-})
-
-const authStore = useAuthStore()
-</script>
-
-<style scoped></style>

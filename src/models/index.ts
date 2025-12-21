@@ -94,3 +94,8 @@ export interface IPerson {
   temporaryMfyId: number
   temporaryMfy: string
 }
+export interface ISelectList {
+  orderCode?: string
+  text: string
+  value: number
+}

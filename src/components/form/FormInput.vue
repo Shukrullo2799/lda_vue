@@ -50,6 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   validateOn: "blur",
   debounceMs: 0,
+  inputClass: "h-10",
 })
 
 const emits = defineEmits<{

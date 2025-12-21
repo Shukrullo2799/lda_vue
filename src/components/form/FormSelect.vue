@@ -20,6 +20,7 @@ interface Props<T = any> {
   error?: string
   class?: HTMLAttributes["class"]
   selectClass?: HTMLAttributes["class"]
+  selectTriggerClass?: HTMLAttributes["class"]
   labelClass?: HTMLAttributes["class"]
   errorClass?: HTMLAttributes["class"]
   required?: boolean
@@ -36,10 +37,11 @@ interface Props<T = any> {
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   validateOn: "blur",
-  optionLabel: "label",
+  optionLabel: "text",
   optionValue: "value",
   returnObject: false,
   multiple: false,
+  selectTriggerClass: "!h-10",
 })
 
 const emits = defineEmits<{
@@ -171,7 +173,7 @@ const containerClasses = computed(() => cn("space-y-2", props.class))
       :aria-invalid="hasError"
       :class="selectClasses"
     >
-      <SelectTrigger class="w-full" :class="selectClasses">
+      <SelectTrigger class="w-full" :class="[selectClasses, selectTriggerClass]">
         <SelectValue :placeholder="placeholder" />
       </SelectTrigger>
       <SelectContent>
