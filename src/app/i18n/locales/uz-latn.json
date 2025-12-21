@@ -1,0 +1,30 @@
+{
+  "demo": {
+    "subtitle": "vee-validate bilan FormInput namoyishi",
+    "submitted": "Forma muvaffaqiyatli yuborildi!"
+  },
+  "fields": {
+    "name": "Ism",
+    "email": "Email",
+    "password": "Parol",
+    "search": "Qidiruv",
+    "amount": "Miqdor"
+  },
+  "placeholders": {
+    "name": "Ismingizni kiriting",
+    "email": "",
+    "password": "Parolni kiriting",
+    "search": "Qidiruv...",
+    "amount": "0"
+  },
+  "actions": {
+    "submit": "Yuborish",
+    "clear": "Tozalash"
+  },
+  "validation": {
+    "required": "Maydon to'ldirilishi shart",
+    "email": "To'g'ri email kiriting",
+    "minChars": "Minimal uzunlik — {count}",
+    "number": "Raqam kiriting"
+  }
+}

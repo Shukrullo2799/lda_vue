@@ -1,0 +1,30 @@
+{
+  "demo": {
+    "subtitle": "vee-validate билан FormInput намойиши",
+    "submitted": "Форма муваффақиятли юборилди!"
+  },
+  "fields": {
+    "name": "Исм",
+    "email": "Email",
+    "password": "Парол",
+    "search": "Қидирув",
+    "amount": "Сумма"
+  },
+  "placeholders": {
+    "name": "Исмингизни киритинг",
+    "email": "",
+    "password": "Паролни киритинг",
+    "search": "Қидирув...",
+    "amount": "0"
+  },
+  "actions": {
+    "submit": "Юбориш",
+    "clear": "Тозалаш"
+  },
+  "validation": {
+    "required": "Мажбурий майдон",
+    "email": "Тўғри email киритинг",
+    "minChars": "Минимал узунлик — {count}",
+    "number": "Рақам киритинг"
+  }
+}

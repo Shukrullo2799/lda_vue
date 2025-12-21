@@ -1,0 +1,30 @@
+{
+  "demo": {
+    "subtitle": "Демонстрация кастомного FormInput с vee-validate",
+    "submitted": "Форма успешно отправлена!"
+  },
+  "fields": {
+    "name": "Имя",
+    "email": "Email",
+    "password": "Пароль",
+    "search": "Поиск",
+    "amount": "Сумма"
+  },
+  "placeholders": {
+    "name": "Введите ваше имя",
+    "email": "",
+    "password": "Введите пароль",
+    "search": "Поиск...",
+    "amount": "0"
+  },
+  "actions": {
+    "submit": "Отправить",
+    "clear": "Очистить"
+  },
+  "validation": {
+    "required": "Поле обязательно для заполнения",
+    "email": "Введите корректный email",
+    "minChars": "Минимальная длина — {count}",
+    "number": "Введите число"
+  }
+}
