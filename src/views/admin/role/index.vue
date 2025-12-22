@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import UserList from "./components/UserList.vue"
+import RoleList from "./components/RoleList.vue"
 </script>
 
 <template>
-  <UserList />
+  <RoleList />
 </template>
 
 <style lang="scss" scoped></style>

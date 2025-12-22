@@ -161,9 +161,12 @@ defineExpose({
   getData,
 })
 
-watchEffect(() => {
-  if (props.identifier) refresh()
-  else loading.value = false
+onMounted(() => {
+  if (props.identifier) {
+    refresh()
+  } else {
+    loading.value = false
+  }
 })
 </script>
 
@@ -198,8 +201,8 @@ watchEffect(() => {
                 <th
                   scope="col"
                   :class="[
-                    field.thClass,
                     'p-4   text-left text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer select-none',
+                    field.thClass,
                   ]"
                   @click="field.sort ? sort(field) : null"
                   :aria-sort="

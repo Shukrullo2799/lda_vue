@@ -1,47 +1,27 @@
 import { defineStore } from "pinia"
 import { useErrorToast } from "@/composables/helpers/useErrorToast"
-import {
-  type ICreateUserRequest,
-  type IUpdateUserRequest,
-  type IUser,
-  UserService,
-} from "@/views/admin/user"
-import type { ISelectList } from "@/models"
+import { RoleService, type IRole, type IPermissionGroup } from "@/views/admin/role"
 
 const { setError } = useErrorToast()
 
-export const useUserStore = defineStore("role", {
+export const useRoleStore = defineStore("role", {
   state: () => ({
-    users: [] as IUser[],
-    editingUser: null as IUpdateUserRequest | ICreateUserRequest | null,
+    editingRole: null as IRole | null,
     loading: false,
     saveLoading: false,
     error: null as string | null,
-    roleList: [] as ISelectList[],
+    permissionList: [] as IPermissionGroup[],
   }),
 
   getters: {},
 
   actions: {
-    async fetchUsers() {
+    async getRoleById(id: string | number) {
       this.loading = true
       this.error = null
       try {
-        const response = await UserService.GetList({})
-        this.users = response.data
-      } catch (error) {
-        setError(error)
-        this.error = error instanceof Error ? error.message : String(error)
-      } finally {
-        this.loading = false
-      }
-    },
-    async getUserById(id: string | number) {
-      this.loading = true
-      this.error = null
-      try {
-        const response = await UserService.Get(+id)
-        this.editingUser = response.data as IUpdateUserRequest
+        const response = await RoleService.Get(+id)
+        this.editingRole = response.data as IRole
         return response.data
       } catch (error) {
         setError(error)
@@ -51,12 +31,12 @@ export const useUserStore = defineStore("role", {
       }
     },
 
-    async updateUser(userData: IUpdateUserRequest | ICreateUserRequest) {
+    async updateRole(userData: IRole) {
       this.saveLoading = true
       this.error = null
 
       try {
-        const response = await UserService.Update(userData)
+        const response = await RoleService.Update(userData)
       } catch (error) {
         setError(error)
         this.error = error instanceof Error ? error.message : String(error)
@@ -64,10 +44,10 @@ export const useUserStore = defineStore("role", {
         this.saveLoading = false
       }
     },
-    async fetchRoleList() {
+    async fetchPermissionList() {
       try {
-        const response = await UserService.GetRoleList()
-        this.roleList = response.data
+        const response = await RoleService.GetPermissionGroups()
+        this.permissionList = response.data
       } catch (error) {
         setError(error)
       }

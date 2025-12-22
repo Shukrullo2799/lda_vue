@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router"
 import { userRoutes } from "./user"
+import { RoleRoutes } from "./role"
 
 export const adminRoutes: RouteRecordRaw[] = [
   {
@@ -12,6 +13,7 @@ export const adminRoutes: RouteRecordRaw[] = [
         redirect: "/admin/users",
       },
       ...userRoutes,
+      ...RoleRoutes,
     ],
   },
 ]

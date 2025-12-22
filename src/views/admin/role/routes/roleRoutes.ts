@@ -1,16 +1,16 @@
 import type { RouteRecordRaw } from "vue-router"
 
-export const userRoutes: RouteRecordRaw[] = [
+export const RoleRoutes: RouteRecordRaw[] = [
   {
-    path: "users",
-    name: "AdminUser",
-    component: () => import("@/views/admin/user/index.vue"),
+    path: "roles",
+    name: "AdminRole",
+    component: () => import("@/views/admin/role/index.vue"),
     meta: {
-      title: "User",
+      title: "Role",
       requiresAuth: true,
       breadcrumbs: [
         {
-          title: "User",
+          title: "Role",
           disabled: true,
           href: "#",
         },

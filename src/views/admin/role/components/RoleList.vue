@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
-import { UserForm, UserService, useUserStore, type IUser } from "@/views/admin/user/"
+import { RoleForm, RoleService, type IRole } from "@/views/admin/role"
 import type { IFields, IFilter } from "@/models"
 
-const router = useRouter()
-const userStore = useUserStore()
 const fields = ref<IFields[]>([
-  { key: "id", label: "ID", visible: true },
+  {
+    key: "id",
+    label: "ID",
+    visible: true,
+    tdClass: "w-16",
+  },
   { key: "name", label: "name", visible: true },
-  { key: "userName", label: "userName", visible: true },
-  { key: "phoneNumber", label: "phoneNumber", visible: true },
-  { key: "email", label: "email", visible: true },
 ])
-const permission = "User"
+const permission = "Role"
 
 const DefaultFilter = reactive<IFilter>({
   search: "",
@@ -25,16 +25,16 @@ const DefaultFilter = reactive<IFilter>({
 
 const filter = reactive<IFilter>({ ...DefaultFilter })
 
-const userId = ref<number | null>(null)
+const roleId = ref<number | null>(null)
 
-const edit = (item: number | IUser) => {
-  userId.value = typeof item === "number" ? item : item.id
+const edit = (item: number | IRole) => {
+  roleId.value = typeof item === "number" ? item : item.id
 }
 </script>
 
 <template>
   <div>
-    <FormTable :service="UserService" :fields="fields" :filter="filter" appendAction>
+    <FormTable :service="RoleService" :fields="fields" :filter="filter" appendAction>
       <template #header="{ refresh, getData }">
         <FormTableHeader
           v-model="fields"
@@ -48,15 +48,12 @@ const edit = (item: number | IUser) => {
           :canClear="false"
         >
           <template #header-bottom>
-            <UserForm v-model:user-id="userId" v-if="userId == 0 || userId" @refresh="refresh" />
+            <RoleForm v-model:role-id="roleId" v-if="roleId == 0 || roleId" @refresh="refresh" />
           </template>
         </FormTableHeader>
       </template>
       <template #append-actions="{ item }">
-        <FormTableAction :service="UserService" :item :permission @edit="edit"></FormTableAction>
-      </template>
-      <template #name="{ item }">
-        {{ item.person?.fullName }}
+        <FormTableAction :service="RoleService" :item :permission @edit="edit"></FormTableAction>
       </template>
     </FormTable>
   </div>

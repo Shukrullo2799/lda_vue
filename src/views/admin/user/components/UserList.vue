@@ -4,8 +4,6 @@ import { useRouter } from "vue-router"
 import { UserForm, UserService, useUserStore, type IUser } from "@/views/admin/user/"
 import type { IFields, IFilter } from "@/models"
 
-const router = useRouter()
-const userStore = useUserStore()
 const fields = ref<IFields[]>([
   { key: "id", label: "ID", visible: true },
   { key: "name", label: "name", visible: true },
