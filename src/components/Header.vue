@@ -30,7 +30,7 @@ const authStore = useAuthStore()
           <RouterLink to="/" class="text-gray-700 hover:text-blue-700 transition-colors">
             {{ $t("header.officialActs") }}
           </RouterLink>
-
+          <!-- 
           <RouterLink to="/" class="text-gray-700 hover:text-blue-700 transition-colors">
             {{ $t("header.aboutSystem") }}
           </RouterLink>
@@ -42,7 +42,7 @@ const authStore = useAuthStore()
           </RouterLink>
           <RouterLink to="/" class="text-gray-700 hover:text-blue-700 transition-colors">
             {{ $t("header.legalExplanations") }}
-          </RouterLink>
+          </RouterLink> -->
         </nav>
 
         <!-- Right side -->
