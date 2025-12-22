@@ -33,6 +33,11 @@ const emits = defineEmits<{
   (e: "update:fields", value: IFields[]): void
 }>()
 const fields = defineModel<IFields[]>("fields", { default: [] })
+const searchText = ref("")
+const onSearch = () => {
+  if (props.filter) props.filter.search = searchText.value
+  refresh()
+}
 
 const auth = useAuthStore()
 const menu = ref<boolean>(false)
@@ -52,7 +57,7 @@ const edit = (id: number) => emits("edit", id)
         <!-- Search -->
         <slot name="search" :ability="auth">
           <div v-if="filter && canSearch" class="w-72">
-            <Input v-model="filter.search" :placeholder="$t('enterText')" @keyup.enter="refresh" />
+            <Input v-model="searchText" :placeholder="$t('enterText')" @keyup.enter="onSearch" />
           </div>
         </slot>
         <!-- Extra filters -->

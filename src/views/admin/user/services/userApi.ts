@@ -11,7 +11,7 @@ const UserService = {
     return ApiService.get("User/Get")
   },
   Update(data: ICreateUserRequest | IUpdateUserRequest) {
-    if (data.hasOwnProperty("id")) return ApiService.post("User/Update", data)
+    if ("id" in data && data.id) return ApiService.post("User/Update", data)
     return ApiService.post("User/Create", data)
   },
 }

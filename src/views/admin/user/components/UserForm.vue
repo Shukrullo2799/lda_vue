@@ -9,13 +9,18 @@ import SetPersonData from "@/components/Person/SetPersonData.vue"
 import UserInfo from "@/components/Person/UserInfo.vue"
 import type { ISetPassportData } from "@/components/Person/PersonDataTypes"
 import { PersonService } from "@/services/others/person.service"
+import { useErrorToast } from "@/composables/helpers/useErrorToast"
 
 const userId = defineModel<number | null>("userId")
+const emits = defineEmits<{
+  (e: "refresh"): void
+}>()
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const { editingUser, loading, saveLoading, roleList, searchLoading } = storeToRefs(userStore)
+const { setError } = useErrorToast()
 
 const isEdit = ref(false)
 
@@ -24,15 +29,14 @@ const loadUser = async () => {
 }
 
 const handleSubmit = async () => {
-  console.log("Submitting user:")
   saveLoading.value = true
 
   try {
     await userStore.updateUser(editingUser.value as ICreateUserRequest | IUpdateUserRequest)
-
-    router.push("/appointments")
+    handleCancelUser()
+    emits("refresh")
   } catch (error) {
-    console.error("Error saving appointment:", error)
+    setError(error)
   } finally {
     loading.value = false
   }
@@ -46,6 +50,7 @@ const setPerson = (filterPerson: ISetPassportData) => {
   if (editingUser.value) {
     PersonService.GetByPassportData(filterPerson).then((res) => {
       editingUser.value!.person = res.data
+      editingUser.value!.personId = res.data.id
     })
   }
 }
@@ -76,7 +81,7 @@ onMounted(async () => {
         </Button>
       </div>
 
-      <Form @submit.prevent="handleSubmit" class="space-y-6" v-if="editingUser">
+      <Form @submit="handleSubmit" class="space-y-6" v-if="editingUser">
         <div class="form-grid">
           <div>
             <FormInput
@@ -90,7 +95,7 @@ onMounted(async () => {
           <div>
             <FormInput
               name="password"
-              v-model="editingUser.userName"
+              v-model="editingUser.password"
               type="password"
               required
               :label="$t('password')"
@@ -103,13 +108,13 @@ onMounted(async () => {
               v-model="editingUser.phoneNumber"
               required
               :label="$t('phoneNumber')"
-              :placeholder="$t('email')"
+              :placeholder="$t('phoneNumber')"
             />
           </div>
           <div>
             <FormInput
               name="email"
-              v-model="editingUser.userName"
+              v-model="editingUser.email"
               type="email"
               :label="$t('email')"
               :placeholder="$t('email')"
@@ -139,9 +144,11 @@ onMounted(async () => {
 
         <div class="page-actions">
           <Button type="submit" :loading="saveLoading">
-            {{ isEdit ? "Update" : "Create" }}
+            {{ isEdit ? $t("Update") : $t("Create") }}
           </Button>
-          <Button type="button" variant="outline" @click="handleCancelUser"> Cancel </Button>
+          <Button type="button" variant="outline" @click="handleCancelUser"
+            >{{ $t("Cancel") }}
+          </Button>
         </div>
       </Form>
     </template>

@@ -28,7 +28,6 @@ const filter = reactive<IFilter>({ ...DefaultFilter })
 const userId = ref<number | null>(null)
 
 const edit = (item: number | IUser) => {
-  console.log("Edit", item)
   userId.value = typeof item === "number" ? item : item.id
 }
 </script>
@@ -49,7 +48,7 @@ const edit = (item: number | IUser) => {
           :canClear="false"
         >
           <template #header-bottom>
-            <UserForm v-model:user-id="userId" v-if="userId == 0 || userId" />
+            <UserForm v-model:user-id="userId" v-if="userId == 0 || userId" @refresh="refresh" />
           </template>
         </FormTableHeader>
       </template>

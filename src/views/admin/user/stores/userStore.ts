@@ -59,7 +59,7 @@ export const useUserStore = defineStore("user", {
       this.error = null
 
       try {
-        const response = await UserService.Update(userData)
+        await UserService.Update(userData)
       } catch (error) {
         setError(error)
         this.error = error instanceof Error ? error.message : String(error)
