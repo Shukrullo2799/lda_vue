@@ -13,5 +13,4 @@ export { userRoutes } from "./routes/userRoutes"
 // Экспорт компонентов
 export { default as UserList } from "./components/UserList.vue"
 export { default as UserForm } from "./components/UserForm.vue"
-export { default as UserDetail } from "./components/UserDetail.vue"
 export { default as UserModule } from "./index.vue"

@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import DocumentList from "./components/DocumentList.vue"
+</script>
 
 <template>
-  <div>Document Page</div>
+  <DocumentList />
 </template>
 
 <style lang="scss" scoped></style>

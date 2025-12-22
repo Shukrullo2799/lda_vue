@@ -71,6 +71,7 @@ watch(
         <FormInput
           v-model="filterPerson.seria"
           :label="$t('passportParams.docSeries')"
+          placeholder="AA"
           v-maska="options"
           :disabled="searchLoading"
           required
@@ -82,6 +83,7 @@ watch(
         <FormInput
           v-model="filterPerson.number"
           :label="$t('passportParams.documentNumber')"
+          placeholder="1234567"
           v-maska="'#######'"
           :disabled="searchLoading"
           required
