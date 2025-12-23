@@ -7,4 +7,7 @@ export const ClassifierService = {
   GetStateSelectList() {
     return ApiService.get("Classifier/GetStateSelectList")
   },
+  GetDocumentClassSelectList() {
+    return ApiService.get("Classifier/GetDocumentClassSelectList")
+  },
 }

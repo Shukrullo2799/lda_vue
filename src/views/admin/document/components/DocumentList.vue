@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue"
 import type { IFields, IFilter } from "@/models"
-
 import { type IDocument, DocumentService } from "@/views/admin/document"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
 
 const fields = ref<IFields[]>([
   { key: "id", label: "ID", visible: true },
@@ -12,6 +14,7 @@ const fields = ref<IFields[]>([
   { key: "email", label: "email", visible: true },
 ])
 const permission = "Document"
+const routerName = "AdminDocument"
 
 const DefaultFilter = reactive<IFilter>({
   search: "",
@@ -25,7 +28,14 @@ const filter = reactive<IFilter>({ ...DefaultFilter })
 
 const userId = ref<number | null>(null)
 
-const edit = (item: number | IDocument) => {}
+const edit = (item: number | IDocument) => {
+  router.push({
+    name: `Edit${routerName}`,
+    params: {
+      id: typeof item === "number" ? item : item.id ? item.id : 0,
+    },
+  })
+}
 </script>
 
 <template>

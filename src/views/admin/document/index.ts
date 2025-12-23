@@ -13,3 +13,4 @@ export { documentRoutes } from "./router/documentRouter"
 // Экспорт компонентов
 export { default as DocumentList } from "./components/DocumentList.vue"
 export { default as DocumentForm } from "./components/DocumentForm.vue"
+export { default as DocumentContentEditor } from "./components/DocumentContentEditor.vue"

@@ -26,7 +26,6 @@ const filter = reactive<IFilter>({ ...DefaultFilter })
 const userId = ref<number | null>(null)
 
 const edit = (item: number | IUser) => {
-  console.log("Edit", item)
   userId.value = typeof item === "number" ? item : item.id
 }
 </script>

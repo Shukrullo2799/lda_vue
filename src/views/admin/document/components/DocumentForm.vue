@@ -1,152 +1,134 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { type ICreateUserRequest, type IUpdateUserRequest, useUserStore } from "@/views/admin/user/"
-import { X } from "lucide-vue-next"
 import { storeToRefs } from "pinia"
 import { Form } from "vee-validate"
-import SetPersonData from "@/components/Person/SetPersonData.vue"
-import UserInfo from "@/components/Person/UserInfo.vue"
-import type { ISetPassportData } from "@/components/Person/PersonDataTypes"
-import { PersonService } from "@/services/others/person.service"
 import { useErrorToast } from "@/composables/helpers/useErrorToast"
+import { DocumentContentEditor, useDocumentStore, type IDocument } from "@/views/admin/document"
+import { LANGUAGE_SELECT_LIST } from "@/utils/constants"
 
-const userId = defineModel<number | null>("userId")
 const emits = defineEmits<{
   (e: "refresh"): void
 }>()
 
 const route = useRoute()
 const router = useRouter()
-const userStore = useUserStore()
-const { editingUser, loading, saveLoading, roleList, searchLoading } = storeToRefs(userStore)
+const documentStore = useDocumentStore()
+const { currentDocument, loading, saveLoading, characterIdList, receiverOrgList } =
+  storeToRefs(documentStore)
 const { setError } = useErrorToast()
 
-const isEdit = ref(false)
+const documentId = route.params.id as string
 
-const loadUser = async () => {
-  userStore.getUserById(userId.value as number)
+const loadDocument = async () => {
+  documentStore.getDocumentById(+documentId)
 }
 
 const handleSubmit = async () => {
   saveLoading.value = true
 
   try {
-    await userStore.updateUser(editingUser.value as ICreateUserRequest | IUpdateUserRequest)
-    handleCancelUser()
-    emits("refresh")
+    await documentStore.updateDocument(currentDocument.value as IDocument)
+
+    router.back()
   } catch (error) {
     setError(error)
   } finally {
     loading.value = false
   }
 }
-const handleCancelUser = () => {
-  userId.value = null
-  editingUser.value = null
-}
-
-const setPerson = (filterPerson: ISetPassportData) => {
-  if (editingUser.value) {
-    PersonService.GetByPassportData(filterPerson).then((res) => {
-      editingUser.value!.person = res.data
-      editingUser.value!.personId = res.data.id
-    })
-  }
-}
 
 onMounted(async () => {
-  if (userId.value != null) {
-    isEdit.value = Boolean(userId.value)
-    await loadUser()
-  }
-  await userStore.fetchRoleList()
+  await documentStore.fetchCharacterList()
+  await documentStore.fetchEeceiverOrgList()
+  await loadDocument()
 })
 </script>
 
 <template>
   <div class="bg-white rounded-lg shadow-lg p-6 my-6">
-    <template v-if="!loading && editingUser">
+    <template v-if="!loading && currentDocument">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-semibold">
-          {{ isEdit ? $t("editUser") : $t("createUser") }}
+          {{ currentDocument.id ? $t("editDocument") : $t("createDocument") }}
         </h2>
-        <Button
-          @click="handleCancelUser"
-          variant="ghost"
-          size="icon"
-          class="rounded-full text-gray-400 hover:text-gray-600"
-        >
-          <X />
-        </Button>
       </div>
 
-      <Form @submit="handleSubmit" class="space-y-6" v-if="editingUser">
+      <Form @submit="handleSubmit" class="space-y-6" v-if="currentDocument">
         <div class="form-grid">
           <div>
-            <FormInput
-              name="userName"
-              v-model="editingUser.userName"
+            <FormPicker
+              name="docOn"
+              v-model="currentDocument.docOn"
               required
-              :label="$t('userName')"
-              :placeholder="$t('userName')"
+              :label="$t('docOn')"
+              :placeholder="$t('docOn')"
             />
           </div>
           <div>
             <FormInput
-              name="password"
-              v-model="editingUser.password"
-              type="password"
+              name="docNumber"
+              v-model="currentDocument.docNumber"
               required
-              :label="$t('password')"
-              :placeholder="$t('password')"
-            />
-          </div>
-          <div>
-            <FormInput
-              name="phoneNumber"
-              v-model="editingUser.phoneNumber"
-              required
-              :label="$t('phoneNumber')"
-              :placeholder="$t('phoneNumber')"
-            />
-          </div>
-          <div>
-            <FormInput
-              name="email"
-              v-model="editingUser.email"
-              type="email"
-              :label="$t('email')"
-              :placeholder="$t('email')"
-            />
-          </div>
-          <div>
-            <FormSelect
-              name="roles"
-              v-model="editingUser.roles"
-              :options="roleList"
-              :label="$t('roles')"
-              multiple
-              :placeholder="$t('roles')"
+              :label="$t('docNumber')"
+              :placeholder="$t('docNumber')"
             />
           </div>
         </div>
         <div>
-          <SetPersonData
-            :searchLoading
-            v-model="editingUser.person"
-            :documentTypeList="[]"
-            @setPerson="setPerson"
-            class="mb-4"
+          <FormInput
+            name="documentName"
+            v-model="currentDocument.documentName"
+            required
+            :label="$t('documentName')"
+            :placeholder="$t('documentName')"
           />
-          <UserInfo :person="editingUser.person" v-if="editingUser.person" :title="$t('person')" />
         </div>
+        <div class="form-grid">
+          <div>
+            <FormSelect
+              name="languageId"
+              v-model="currentDocument.languageId"
+              :options="LANGUAGE_SELECT_LIST"
+              :label="$t('language')"
+              :placeholder="$t('language')"
+            />
+          </div>
+          <div>
+            <FormSelect
+              name="characterId"
+              v-model="currentDocument.characterId"
+              :options="characterIdList"
+              :label="$t('character')"
+              :placeholder="$t('character')"
+            />
+          </div>
+          <div>
+            <FormSelect
+              name="receiverOrgId"
+              v-model="currentDocument.receiverOrgId"
+              :options="receiverOrgList"
+              :label="$t('receiverOrg')"
+              :placeholder="$t('receiverOrg')"
+            />
+          </div>
+        </div>
+        <div>
+          <FormInput
+            name="tags"
+            v-model="currentDocument.tags"
+            required
+            :label="$t('tags')"
+            :placeholder="$t('tags')"
+          />
+        </div>
+        <DocumentContentEditor v-model:content="currentDocument.content" />
 
         <div class="page-actions">
           <Button type="submit" :loading="saveLoading">
-            {{ isEdit ? $t("Update") : $t("Create") }}
+            {{ currentDocument?.id ? $t("Update") : $t("Create") }}
           </Button>
-          <Button type="button" variant="outline" @click="handleCancelUser"
+          <Button type="button" variant="outline" @click="router.back()"
             >{{ $t("Cancel") }}
           </Button>
         </div>

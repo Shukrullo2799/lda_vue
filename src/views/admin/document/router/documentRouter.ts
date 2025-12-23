@@ -20,7 +20,7 @@ export const documentRoutes: RouteRecordRaw[] = [
   {
     path: "documents/edit/:id",
     name: "EditAdminDocument",
-    component: () => import("@/views/admin/document/index.vue"),
+    component: () => import("@/views/admin/document/components/DocumentForm.vue"),
     meta: {
       title: "Document",
       requiresAuth: true,

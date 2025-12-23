@@ -14,5 +14,8 @@ const OrganizationService = {
     if ("id" in data && data.id) return ApiService.post("ReceivingOrgan/Update", data)
     return ApiService.post("ReceivingOrgan/Create", data)
   },
+  GetAsSelectList() {
+    return ApiService.get("ReceivingOrgan/GetAsSelectList")
+  },
 }
 export { OrganizationService }

@@ -1,30 +1,75 @@
 import { defineStore } from "pinia"
+import { useErrorToast } from "@/composables/helpers/useErrorToast"
+import { DocumentService, type IDocument } from "@/views/admin/document"
+import type { ISelectList } from "@/models"
+import { ClassifierService } from "@/services/others/classifier.service"
+import { OrganizationService } from "../../organization"
+
+const { setError } = useErrorToast()
 
 export const useDocumentStore = defineStore("document", {
   state: () => ({
     documents: [] as Array<any>,
-    currentDocument: null as any,
+    currentDocument: null as IDocument | null,
     loading: false,
+    saveLoading: false,
+    receiverOrgList: [] as ISelectList[],
+    characterIdList: [] as ISelectList[],
   }),
   actions: {
     async fetchDocuments() {
       this.loading = true
-      // Simulate an API call
-      setTimeout(() => {
-        this.documents = [
-          { id: 1, title: "Document 1" },
-          { id: 2, title: "Document 2" },
-        ]
+      try {
+        const response = await DocumentService.GetList({})
+        this.documents = response.data
+      } catch (error) {
+        setError(error)
+      } finally {
         this.loading = false
-      }, 1000)
+      }
     },
     async getDocumentById(id: number) {
       this.loading = true
-      // Simulate an API call
-      setTimeout(() => {
-        this.currentDocument = { id, title: `Document ${id}` }
+      try {
+        const response = await DocumentService.Get(+id)
+        this.currentDocument = response.data as IDocument
+        this.currentDocument.content = []
+        return response.data
+      } catch (error) {
+        setError(error)
+      } finally {
         this.loading = false
-      }, 1000)
+      }
+    },
+    async updateDocument(documentData: IDocument) {
+      this.saveLoading = true
+      try {
+        await DocumentService.Update(documentData)
+      } catch (error) {
+        setError(error)
+      } finally {
+        this.saveLoading = false
+      }
+    },
+    async fetchCharacterList() {
+      try {
+        const response = await ClassifierService.GetDocumentClassSelectList()
+        this.characterIdList = response.data
+      } catch (error) {
+        setError(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async fetchEeceiverOrgList() {
+      try {
+        const response = await OrganizationService.GetAsSelectList()
+        this.receiverOrgList = response.data
+      } catch (error) {
+        setError(error)
+      } finally {
+        this.loading = false
+      }
     },
   },
 })
