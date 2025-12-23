@@ -3,6 +3,7 @@ import { userRoutes } from "./user"
 import { RoleRoutes } from "./role"
 import { documentRoutes } from "./document"
 import { orgnizationRoutes } from "./organization"
+import { documntTypeRoutes } from "./documentType"
 
 export const adminRoutes: RouteRecordRaw[] = [
   {
@@ -18,6 +19,7 @@ export const adminRoutes: RouteRecordRaw[] = [
       ...RoleRoutes,
       ...documentRoutes,
       ...orgnizationRoutes,
+      ...documntTypeRoutes,
     ],
   },
 ]

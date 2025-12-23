@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, watchEffect } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { Users, FileText, Shield, Building2 } from "lucide-vue-next"
+import { Users, FileText, Shield, Building2, BookText } from "lucide-vue-next"
 import { useAuthStore } from "@/views/auth"
 
-type TabType = "users" | "documents" | "roles" | "organizations"
+type TabType = "users" | "documents" | "roles" | "organizations" | "documntTypes"
 
 const route = useRoute()
 const router = useRouter()
@@ -16,6 +16,7 @@ const activeTab = computed<TabType>(() => {
   if (lastSegment === "documents") return "documents"
   if (lastSegment === "roles") return "roles"
   if (lastSegment === "organizations") return "organizations"
+  if (lastSegment === "documntTypes") return "documntTypes"
   return "users" // default
 })
 
@@ -54,7 +55,7 @@ watchEffect(() => {
           <!-- Users -->
           <button
             @click="goTo('users')"
-            class="py-4 border-b-2 transition-colors flex items-center gap-2"
+            class="py-4 border-b-2 transition-colors flex items-center gap-2 cursor-pointer"
             :class="
               activeTab === 'users'
                 ? 'border-blue-700 text-blue-700'
@@ -68,7 +69,7 @@ watchEffect(() => {
           <!-- Documents -->
           <button
             @click="goTo('documents')"
-            class="py-4 border-b-2 transition-colors flex items-center gap-2"
+            class="py-4 border-b-2 transition-colors flex items-center gap-2 cursor-pointer"
             :class="
               activeTab === 'documents'
                 ? 'border-blue-700 text-blue-700'
@@ -82,7 +83,7 @@ watchEffect(() => {
           <!-- Roles -->
           <button
             @click="goTo('roles')"
-            class="py-4 border-b-2 transition-colors flex items-center gap-2"
+            class="py-4 border-b-2 transition-colors flex items-center gap-2 cursor-pointer"
             :class="
               activeTab === 'roles'
                 ? 'border-blue-700 text-blue-700'
@@ -96,7 +97,7 @@ watchEffect(() => {
           <!-- Organizations -->
           <button
             @click="goTo('organizations')"
-            class="py-4 border-b-2 transition-colors flex items-center gap-2"
+            class="py-4 border-b-2 transition-colors flex items-center gap-2 cursor-pointer"
             :class="
               activeTab === 'organizations'
                 ? 'border-blue-700 text-blue-700'
@@ -105,6 +106,19 @@ watchEffect(() => {
           >
             <Building2 class="w-5 h-5" />
             {{ $t("admin.organization") }}
+          </button>
+          <!-- DocumntTypes -->
+          <button
+            @click="goTo('documntTypes')"
+            class="py-4 border-b-2 transition-colors flex items-center gap-2 cursor-pointer"
+            :class="
+              activeTab === 'documntTypes'
+                ? 'border-blue-700 text-blue-700'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            "
+          >
+            <BookText class="w-5 h-5" />
+            {{ $t("admin.documntTypes") }}
           </button>
         </div>
       </div>
