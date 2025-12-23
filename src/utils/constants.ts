@@ -1,13 +1,39 @@
-type languageType = {
-  title: string
-  subtext: string
-  value: string
-}
-
-export const languageDD: languageType[] = [
-  { title: "O'zbekcha", subtext: "O'z", value: "uz_latn" },
-  { title: "Ўзбекча", subtext: "Ўз", value: "uz_cyrl" },
-  { title: "Русский", subtext: "Ру", value: "ru" },
+export const LANGUAGE_SELECT_LIST = [
+  {
+    code: "uz-Cyrl",
+    shortName: "Ўз",
+    fullName: "Ўзбекча",
+    value: 4,
+    text: "Ўзбекча",
+  },
+  {
+    code: "uz-Latn",
+    shortName: "O`z",
+    fullName: "O`zbekcha",
+    value: 5,
+    text: "O`zbekcha",
+  },
+  {
+    code: "ru",
+    shortName: "Ру",
+    fullName: "Русский",
+    value: 3,
+    text: "Русский",
+  },
+  {
+    code: "en",
+    shortName: "En",
+    fullName: "English",
+    value: 6,
+    text: "English",
+  },
+  {
+    code: "qr",
+    shortName: "Қр",
+    fullName: "Қарақалпақша",
+    value: 7,
+    text: "Қарақалпақша",
+  },
 ]
 
 export const SERIES_LIST = [

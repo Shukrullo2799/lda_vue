@@ -99,3 +99,18 @@ export interface ISelectList {
   text: string
   value: number
 }
+
+export interface ITranslates {
+  language?: string
+  columnName: string
+  languageId: number
+  translateText: string
+}
+export interface ILanguageList {
+  code: string
+  shortName: string
+  fullName: string
+  value: number
+  text: string
+  orderCode: string | null | number
+}

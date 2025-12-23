@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, watchEffect } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { Users, FileText, Shield } from "lucide-vue-next"
+import { Users, FileText, Shield, Building2 } from "lucide-vue-next"
 import { useAuthStore } from "@/views/auth"
-import axios from "axios"
 
-type TabType = "users" | "documents" | "roles"
+type TabType = "users" | "documents" | "roles" | "organizations"
 
 const route = useRoute()
 const router = useRouter()
@@ -16,6 +15,7 @@ const activeTab = computed<TabType>(() => {
   const lastSegment = route.path.split("/").pop()
   if (lastSegment === "documents") return "documents"
   if (lastSegment === "roles") return "roles"
+  if (lastSegment === "organizations") return "organizations"
   return "users" // default
 })
 
@@ -79,6 +79,7 @@ watchEffect(() => {
             {{ $t("admin.documentsTab") }}
           </button>
 
+          <!-- Roles -->
           <button
             @click="goTo('roles')"
             class="py-4 border-b-2 transition-colors flex items-center gap-2"
@@ -90,6 +91,20 @@ watchEffect(() => {
           >
             <Shield class="w-5 h-5" />
             {{ $t("admin.rolesTab") }}
+          </button>
+
+          <!-- Organizations -->
+          <button
+            @click="goTo('organizations')"
+            class="py-4 border-b-2 transition-colors flex items-center gap-2"
+            :class="
+              activeTab === 'organizations'
+                ? 'border-blue-700 text-blue-700'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            "
+          >
+            <Building2 class="w-5 h-5" />
+            {{ $t("admin.organization") }}
           </button>
         </div>
       </div>
