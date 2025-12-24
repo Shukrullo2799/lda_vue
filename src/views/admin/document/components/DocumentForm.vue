@@ -6,6 +6,7 @@ import { Form } from "vee-validate"
 import { useErrorToast } from "@/composables/helpers/useErrorToast"
 import { DocumentContentEditor, useDocumentStore, type IDocument } from "@/views/admin/document"
 import { LANGUAGE_SELECT_LIST } from "@/utils/constants"
+import { useClassifierStore } from "@/stores/classifier"
 
 const emits = defineEmits<{
   (e: "refresh"): void
@@ -14,8 +15,12 @@ const emits = defineEmits<{
 const route = useRoute()
 const router = useRouter()
 const documentStore = useDocumentStore()
+const classifierStore = useClassifierStore()
+
 const { currentDocument, loading, saveLoading, characterIdList, receiverOrgList } =
   storeToRefs(documentStore)
+const { stateList } = storeToRefs(classifierStore)
+
 const { setError } = useErrorToast()
 
 const documentId = route.params.id as string
@@ -41,6 +46,7 @@ const handleSubmit = async () => {
 onMounted(async () => {
   await documentStore.fetchCharacterList()
   await documentStore.fetchEeceiverOrgList()
+  await classifierStore.fetchState()
   await loadDocument()
 })
 </script>
@@ -110,6 +116,15 @@ onMounted(async () => {
               :options="receiverOrgList"
               :label="$t('receiverOrg')"
               :placeholder="$t('receiverOrg')"
+            />
+          </div>
+          <div>
+            <FormSelect
+              name="stateId"
+              v-model="currentDocument.stateId"
+              :options="stateList"
+              :label="$t('state')"
+              :placeholder="$t('state')"
             />
           </div>
         </div>

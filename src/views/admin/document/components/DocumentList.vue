@@ -8,10 +8,13 @@ const router = useRouter()
 
 const fields = ref<IFields[]>([
   { key: "id", label: "ID", visible: true },
-  { key: "name", label: "name", visible: true },
-  { key: "userName", label: "userName", visible: true },
-  { key: "phoneNumber", label: "phoneNumber", visible: true },
-  { key: "email", label: "email", visible: true },
+  { key: "docNumber", label: "docNumber", visible: true },
+  { key: "docOn", label: "docOn", visible: true },
+  { key: "documentName", label: "documentName", visible: true },
+  { key: "language", label: "language", visible: false },
+  { key: "receiverOrgan", label: "receiverOrgan", visible: false },
+  { key: "character", label: "character", visible: false },
+  { key: "state", label: "state", visible: true },
 ])
 const permission = "Document"
 const routerName = "AdminDocument"

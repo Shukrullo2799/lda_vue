@@ -1,8 +1,8 @@
-import { nextTick } from 'vue'
-import { createI18n } from 'vue-i18n'
+import { nextTick } from "vue"
+import { createI18n } from "vue-i18n"
 
-export const SUPPORT_LOCALES = ['uz-cyrl', 'uz-latn', 'ru']
-export const locale = localStorage.getItem('lang') || import.meta.env.VITE_DEFAULT_LOCALE
+export const SUPPORT_LOCALES = ["uz-Cyrl", "uz-Latn", "ru", "en", "qr"]
+export const locale = localStorage.getItem("lang") || import.meta.env.VITE_DEFAULT_LOCALE
 
 export async function loadLocaleMessages(locale: string) {
   const messages = await import(`./locales/${locale}.json`)

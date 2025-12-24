@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { Search, ChevronDown, AlertCircle } from "lucide-vue-next"
 import { useI18n } from "vue-i18n"
 
 import { branches as mockBranches, getRecentDocuments, stats as mockStats } from "@/data/mock-data"
 import { BranchCard, CardSkeleton, DocumentListItem, DocumentListSkeleton } from "@/views/home"
+import { useDocumentStore } from "@/views/admin/document"
+import { storeToRefs } from "pinia"
+import LoadingSpinner from "@/components/utils/LoadingSpinner.vue"
+
+const documentStore = useDocumentStore()
+
+const { documents } = storeToRefs(documentStore)
 
 /* 🔍 Search form */
 const { t } = useI18n()
@@ -39,6 +46,9 @@ const handleSearch = async () => {
     limit: 20,
   })
 }
+onMounted(async () => {
+  await documentStore.fetchDocuments()
+})
 </script>
 <template>
   <div class="min-h-screen bg-gray-50">
@@ -82,13 +92,7 @@ const handleSearch = async () => {
 
           <!-- Results -->
           <div v-if="searchResults" class="mt-4 bg-blue-50 border border-blue-200 rounded p-4">
-            <p class="text-sm text-blue-800 mb-2">{{ searchResults.total }} ta natija topildi</p>
-
-            <DocumentListItem
-              v-for="doc in searchResults.documents.slice(0, 5)"
-              :key="doc.id"
-              :document="doc"
-            />
+            <DocumentListItem v-for="doc in documents.slice(0, 5)" :key="doc.id" :document="doc" />
           </div>
         </div>
       </div>
@@ -100,7 +104,7 @@ const handleSearch = async () => {
         {{ $t("home.legislativeBranches") }}
       </h2>
 
-      <div v-if="branchesLoading">Yuklanmoqda...</div>
+      <div v-if="branchesLoading"><LoadingSpinner /> {{ $t("Branch") }}</div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <BranchCard v-for="branch in branches" :key="branch.id" v-bind="branch" />
@@ -116,9 +120,9 @@ const handleSearch = async () => {
       <DocumentListSkeleton v-if="recentDocsLoading" />
 
       <div class="space-y-3" v-else>
-        <DocumentListItem v-for="doc in recentDocuments" :key="doc.id" :document="doc" />
+        <DocumentListItem v-for="doc in documents.slice(0, 5)" :key="doc.id" :document="doc" />
         <div class="mt-5 text-center">
-          <Button as-child class=" ">
+          <Button as-child class="">
             <RouterLink :to="{ name: 'Document' }" class="inline-flex items-center gap-1">
               {{ $t("home.viewAllNewDocuments") }}
             </RouterLink>

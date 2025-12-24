@@ -3,14 +3,7 @@ import { computed } from "vue"
 import { RouterLink } from "vue-router"
 import { User, LogOut } from "lucide-vue-next"
 import { useAuthStore } from "@/views/auth"
-
-const language = computed({
-  get: () => localStorage.getItem("language") || "en",
-  set: (value: string) => {
-    localStorage.setItem("language", value)
-    location.reload()
-  },
-})
+import LanguageDD from "./utils/LanguageDD.vue"
 
 const authStore = useAuthStore()
 </script>
@@ -48,14 +41,7 @@ const authStore = useAuthStore()
         <!-- Right side -->
         <div class="flex items-center gap-4">
           <!-- Language -->
-          <select
-            class="px-3 py-1 border border-gray-300 rounded text-sm bg-white"
-            v-model="language"
-          >
-            <option value="en">EN</option>
-            <option value="uz">UZ</option>
-            <option value="ru">RU</option>
-          </select>
+          <LanguageDD />
 
           <!-- Auth -->
           <template v-if="authStore.isLoggedIn">

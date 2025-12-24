@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { useErrorToast } from "@/composables/helpers/useErrorToast"
 import { DocumentService, type IDocument } from "@/views/admin/document"
-import type { ISelectList } from "@/models"
+import type { IFilter, ISelectList } from "@/models"
 import { ClassifierService } from "@/services/others/classifier.service"
 import { OrganizationService } from "../../organization"
 
@@ -15,13 +15,20 @@ export const useDocumentStore = defineStore("document", {
     saveLoading: false,
     receiverOrgList: [] as ISelectList[],
     characterIdList: [] as ISelectList[],
+    filter: {
+      orderType: "asc",
+      page: 1,
+      pageSize: 20,
+      search: "",
+    } as IFilter,
   }),
   actions: {
     async fetchDocuments() {
       this.loading = true
       try {
-        const response = await DocumentService.GetList({})
-        this.documents = response.data
+        const response = await DocumentService.GetList(this.filter)
+        this.documents = response.data.items
+        this.filter.totalRows = response.data.total
       } catch (error) {
         setError(error)
       } finally {

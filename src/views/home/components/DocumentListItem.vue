@@ -2,7 +2,7 @@
 import { computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { RouterLink } from "vue-router"
-import { type IDocument } from "@/views/home"
+import { type IDocument } from "@/views/admin/document"
 
 interface Props {
   document: IDocument
@@ -12,12 +12,10 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 
 const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-800",
-  repealed: "bg-red-100 text-red-800",
-  draft: "bg-yellow-100 text-yellow-800",
+  1: "bg-green-100 text-green-800",
+  2: "bg-red-100 text-red-800",
+  3: "bg-yellow-100 text-yellow-800",
 }
-
-const formattedDate = computed(() => new Date(props.document.adoptionDate).toLocaleDateString())
 </script>
 
 <template>
@@ -31,10 +29,10 @@ const formattedDate = computed(() => new Date(props.document.adoptionDate).toLoc
         <!-- Number + badges -->
         <div class="flex items-center gap-2 mb-2">
           <span class="text-sm text-gray-600">
-            {{ document.number }}
+            {{ document.docNumber }}
           </span>
 
-          <span
+          <!-- <span
             v-if="document.isNew"
             class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-[8px]"
           >
@@ -46,28 +44,28 @@ const formattedDate = computed(() => new Date(props.document.adoptionDate).toLoc
             class="px-2 py-0.5 bg-orange-100 text-orange-800 text-xs rounded-[8px]"
           >
             {{ t("status.updated") }}
-          </span>
+          </span> -->
         </div>
 
         <!-- Title -->
-        <h3 class="text-gray-900 mb-2">
-          {{ document.title }}
+        <h3 class="text-gray-900 mb-2 line-clamp-1">
+          {{ document.documentName }}
         </h3>
 
         <!-- Meta -->
         <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-          <span> {{ t("document.type") }}: {{ document.type }} </span>
-          <span> {{ t("document.adopted") }}: {{ formattedDate }} </span>
+          <span> {{ t("character") }}: {{ document.character }} </span>
+          <span> {{ t("document.adopted") }}: {{ document.docOn }} </span>
           <span>
-            {{ document.issuingAuthority }}
+            {{ document.receiverOrgan }}
           </span>
         </div>
       </div>
 
       <!-- Status -->
       <div>
-        <span class="px-3 py-1 rounded-[8px] text-xs" :class="statusColors[document.status]">
-          {{ t(`status.${document.status}`) }}
+        <span class="px-3 py-1 rounded-[8px] text-xs" :class="statusColors[document.stateId]">
+          {{ document.state }}
         </span>
       </div>
     </div>

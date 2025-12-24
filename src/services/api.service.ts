@@ -91,19 +91,23 @@ const ApiService = {
         return response
       },
       async (error) => {
-        if (error.request.status == 401) {
+        const status = error.response?.status
+        const requestStatus = error.request.status
+        if (status === 401 || requestStatus === 401) {
           window.location.href = "/login"
         }
 
-        if (error.request.status == 403) {
+        if (status === 403 || requestStatus === 403) {
           window.location.href = "/error/403"
         }
-        if (error.request?.status >= 500) {
+        if ((status && status >= 500) || (requestStatus && requestStatus >= 500)) {
           toast.error(t("serverErrorTitle"), {
-            description: error.request.status,
+            description: status,
           })
         }
-        throw error
+
+        // throw error
+        return Promise.reject(error)
       },
     )
   },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { Search } from "lucide-vue-next"
 import { DocumentListItem } from "@/views/home/index"
@@ -7,11 +7,19 @@ import { useDocumentStore } from "@/views/admin/document"
 import { storeToRefs } from "pinia"
 import VPagination from "@/components/utils/VPagination.vue"
 import LoadingSpinner from "@/components/utils/LoadingSpinner.vue"
+import type { IFilter } from "@/models"
 
 const route = useRoute()
 const router = useRouter()
 
 const searchLoading = ref(false)
+
+const filter = ref<IFilter>({
+  orderType: "asc",
+  page: 1,
+  pageSize: 20,
+  search: "",
+})
 
 const searchForm = ref({
   documentNumber: "",
@@ -35,13 +43,17 @@ const handleSearch = async () => {
     limit: 20,
   })
 }
+
+onMounted(async () => {
+  await documentStore.fetchDocuments()
+})
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Content -->
     <div class="max-w-7xl mx-auto px-4 py-8">
-      <div class="bg-white rounded-lg shadow-lg p-6">
+      <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <FormInput
             v-model="searchForm.documentNumber"
@@ -73,11 +85,11 @@ const handleSearch = async () => {
       <div v-if="loading" class="flex justify-center items-center mt-6">
         <LoadingSpinner />
       </div>
-      <div v-if="!loading && documents.length">
+      <div v-else-if="!loading && documents.length">
         <div class="space-y-3">
           <DocumentListItem v-for="doc in documents" :key="doc.id" :document="doc" />
         </div>
-        <VPagination :filter="searchForm" @get-data="documentStore.fetchDocuments" />
+        <VPagination :filter="filter" @get-data="documentStore.fetchDocuments" />
       </div>
 
       <Card v-else class="p-12 text-center">
