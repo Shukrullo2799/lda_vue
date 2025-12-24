@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue"
+import { onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
 import { Form } from "vee-validate"
@@ -7,6 +7,8 @@ import { useErrorToast } from "@/composables/helpers/useErrorToast"
 import { DocumentContentEditor, useDocumentStore, type IDocument } from "@/views/admin/document"
 import { LANGUAGE_SELECT_LIST } from "@/utils/constants"
 import { useClassifierStore } from "@/stores/classifier"
+
+import FileUpload from "@/components/form/FleUpload.vue"
 
 const emits = defineEmits<{
   (e: "refresh"): void
@@ -28,6 +30,8 @@ const documentId = route.params.id as string
 const loadDocument = async () => {
   documentStore.getDocumentById(+documentId)
 }
+
+const files = ref<any>([])
 
 const handleSubmit = async () => {
   saveLoading.value = true
@@ -137,6 +141,12 @@ onMounted(async () => {
             :placeholder="$t('tags')"
           />
         </div>
+
+        <div>
+          <FileUpload v-model:files="files" :table-id="111" :config="{}" label="lorem" required />
+          <pre class="mt-4 text-xs">{{ files }}</pre>
+        </div>
+
         <DocumentContentEditor v-model:content="currentDocument.content" />
 
         <div class="page-actions">
